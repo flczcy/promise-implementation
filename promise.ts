@@ -223,6 +223,9 @@ export default class _Promise<T = unknown> {
     let resultLength = 0
     return new _Promise((resolve, reject) => {
       array.forEach((p, i) => {
+        // 这里不使用 p.then() 是由于 p 可能不是 promise, 这里的 array 数组中不一定都是 promise
+        // 比如 array = [Promise, 2, 3, Promise]
+        // 所以这里使用 _Promise.resolve(p) 将 2, 3 等包装成一个 promise _Promise.resolve(2)
         _Promise.resolve(p).then((value) => {
           result[i] = value
           resultLength++
