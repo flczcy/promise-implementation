@@ -181,9 +181,11 @@ export default class _Promise<T = unknown> {
         this._rejectQueue.push(executeOnRejected)
       } else if (this._status === PROMISE_STATUS.FULFILLED) {
         // 2.2.4
+        // Promise.resolve().then(fn) => p.then()执行时, p 的状态就是 FULFILLED, 那么这里直接就将 then 中回调函数放入到微任务队列中执行
         queueMicrotask(executeOnFulfilled)
       } else if (this._status === PROMISE_STATUS.REJECTED) {
         // 2.2.4
+        // Promise.reject().then(fn) => p.then()执行时, p 的状态就是 REJECTED, 那么这里直接就将 then 中回调函数放入到微任务队列中执行
         queueMicrotask(executeOnRejected)
       }
     })
