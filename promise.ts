@@ -94,6 +94,7 @@ export default class _Promise<T = unknown> {
 
   private _isPendingResolveValue = false
 
+  // PromiseLike 时 ts 内部的工具类型
   constructor (executor: (resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void) {
     const resolve = (value?: T | PromiseLike<T>) => {
       if (this._status === PROMISE_STATUS.PENDING) {
