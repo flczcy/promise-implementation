@@ -171,6 +171,9 @@ export default class _Promise<T = unknown> {
           reject(this._reason)
         }
       }
+      // !! 注意这里的 this 指向调用 then 方法的那个 promise 不是指向这里 then 函数内部创建的 promise2
+      // p.then() -> 这里的 this 指向的是 p, p.then() 执行时, p 的状态不确定的, 当 PENDING 时, 
+      // 将回调函数保存起来 保存到 p._fulfillQueue, p._rejectQueue 中, 当 p 状态变化后将 _fulfillQueue, _rejectQueue 中函数放到微任务队列中执行
       if (this._status === PROMISE_STATUS.PENDING) {
         // 2.2.6.1 `then` 方法可能在同一个 promise 上被调用多次，当 promise 状态变成 `fulfilled` 时，所有 `onFulfilled` 回调按 `then` 的调用顺序调用
         this._fulfillQueue.push(executeOnFulfilled)
